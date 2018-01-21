@@ -3,9 +3,16 @@
       <form class="col-sm-6 col-sm-offset-3" novalidate (ngSubmit)="verifyPassword(loginInput.value)">
         <div class="form-group">
           <label for="loginInput">Password</label>
-          <input #loginInput type="text" class="form-control" placeholder="Enter Password" id="loginInput" name="loginInput">
+          <input #loginInput type="text" class="form-control" autocomplete="off" placeholder="Enter Password" id="loginInput" name="loginInput">
         </div>
           <button type="button" class="btn btn-primary" (click)="verifyPassword(loginInput.value)">Login</button>
       </form>
     </div>
+</ng-container>
+<ng-container *ngIf="loginVerified">
+  <ng-container *ngFor="let data of dataSet">
+      <div> {{data.label}}</div>
+      <div> {{data.originationDate}}</div>
+      <div> {{data.originationAmount}}</div>
+  </ng-container>
 </ng-container>
