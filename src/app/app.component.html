@@ -9,7 +9,7 @@
       </form>
     </div>
 </ng-container>
-<ng-container *ngIf="loginVerified">
+<ng-container *ngIf="!loginVerified">
   <ng-container *ngFor="let data of dataSet">
       <div> {{data.label}} </div>
       <div> {{data.originationDate}} </div>

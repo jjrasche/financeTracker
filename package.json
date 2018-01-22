@@ -27,7 +27,9 @@
     "crypto-js": "^3.1.9-1",
     "bootstrap": "3.3.7",
     "jquery": "3.2.1",
-    "d3": "^4.12.2"
+    "d3": "^4.12.2",
+    "moment": "^2.20.1",
+    "d3-scale-chromatic": "^1.1.1"
   },
   "devDependencies": {
     "@types/core-js": "0.9.34",
@@ -36,6 +38,7 @@
     "@types/d3-scale": "1.0.4",
     "@types/d3-selection": "1.0.5",
     "@types/d3-shape": "1.0.5",
+    "@types/d3-color": "1.0.5",
     "@angular-devkit/core": "0.0.28",
     "@angular/cli": "1.6.3",
     "@angular/compiler-cli": "^5.0.0",
