@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  body { font-size: 13px; font-family: 'Helvetica',Helvetica,Arial,sans-serif; }
+  #annualYieldsChart .line { stroke-width: 3px; }
+  #annualYieldsChart path.domain { opacity: 0; }
+  #annualYieldsChart .x text { fill: #7d7d7d; font-family: 'Arial Narrow', Arial, sans-serif; font-stretch: condensed; font-size: 11px; }
+  #annualYieldsChart .annual-yield-grid-background { fill: #f1f1f1; }
+  .source { margin: 0 10px 10px 80px; }
+</style>
+<body>
+  <div id="annualYieldsChart" class="d3charts"></div>
+
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+  <script>
+    (function renderAnnualYieldsChart(dataSource) {
+
+      let margin = {top: 50, right: 50, bottom: 30, left: 80};
+      let canvasHeight = 370;
+      let width = 830;
+      let height = 380 - margin.top - margin.bottom;
+
+      /* Canvas */
+      var svg = d3.select("#annualYieldsChart").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", canvasHeight)
+        .attr({"margin-top": margin.top, "margin-left":0})
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      /* Set background */
+      svg.append("rect").attr("class", "annual-yield-grid-background").attr({"height": 300, "width": 805, "x": 1, "y":0});
+
+      /* Draw chart */
+      var drawData = function(data, dataTerm){
+        // create mapping between colors and year 
+        let colorVintage = d3.scale.ordinal().range(["#784a1c", "#007070", "#c70076", "#8f62cc", "#45bdbd", "#e996c8"]);
+        colorVintage.domain(d3.keys(data[0]).filter(function(key) { return key !== "Months"; }));
+        // convert data from month indexed to year indexed
+        var vintageGrades = colorVintage.domain().map(function(name) {
+          return {
+            name: name,
+            values: data.map(function(d) {
+              var percentValue = d[name];
+              if(percentValue !== "") { percentValue = +d[name] }
+                return {month: +d.Months, percentage: percentValue};
+            })
+          };
+        });
+        /* clean up null data */
+        for(var i in vintageGrades){
+          var values = vintageGrades[i].values;
+          for(var j = values.length-1 ; j>=0 ; j--){
+            if(values[j].percentage === ""){
+              values.splice(j,1);
+            }
+          }
+        }
+
+        // set x-axis      
+        let x = d3.scale.ordinal();
+        x.domain(data.map(function(d,i) { return d.Months ; })).rangeRoundBands([0, width], 0);
+        svg.append("g")
+        .attr("class", "xAxis")
+        .attr("transform", "translate(-10," + height + ")")
+        .call(d3.svg.axis().scale(x).orient("bottom"))
+        .append("text");
+
+        // set y-axis
+        let y = d3.scale.linear();
+        let yDomain = d3.extent(vintageGrades.map(grade => d3.max(grade.values.map(value => value.percentage)))
+                                .concat(vintageGrades.map(grade => d3.min(grade.values.map(value => value.percentage)))));
+        yDomain[1] = yDomain[1] % 5 === 0 ? yDomain[1] + 5 : yDomain[1] + 5 - (yDomain[1]%5);
+        yDomain[0] = yDomain[0] > 0 ? 0 : -5;
+        y.domain(yDomain).range([height, 0]);
+        svg.append("g")
+        .attr("class", "yAxis")
+        .call(d3.svg.axis().scale(y).orient("left").tickFormat(function(d){ return d + "%"; }))
+        .append("text")
+        .attr("transform", "rotate(-90)");
+
+        /* Draw line for each vintage year - Data */
+        var line = d3.svg.line()
+          .interpolate("basis") 
+          .x(function(d) { return x(d.month); })
+          .y(function(d) { return y(d.percentage); });
+
+        var vintage = svg.selectAll(".vintage")
+          .data(vintageGrades)
+          .enter()
+            .append("g")
+            .attr("class", "vintage");
+        vintage.append("path")
+          .attr("class", "line")
+          .attr("d", function(d) { return line(d.values); })
+          .style("stroke", function(d) { return colorVintage(d.name); })
+          .style("fill-opacity", 0)
+          .attr("id", function(d) { return d.name; })
+
+        /* Legend: year */
+        svg.append("text").text("Vintage").attr("x", 821).attr("y", 15)
+
+        let legendData = colorVintage.domain().slice().reverse();
+        var legendYear = svg.selectAll(".legend-year")
+          .data(() => legendData)
+          .enter()
+            .append("g")
+            .attr("transform", "translate(0, 375)");
+        legendYear
+          .append("text")
+          .attr("x", 825)
+          .attr("y",function(d,i) {
+            if (i===0) { return -(height+36); }
+            else { return -((height+36) - (i*25)); }
+          })
+          .attr("font-weight","bold")
+          .style("fill", colorVintage)
+          .text(function(d) { return d; });
+      };
+
+      /* Load chart data */
+      d3.csv(dataSource, function(error, data){ 
+        drawData(data);
+      });
+})("annual_yields_36M_All.csv")
+
+</script>
+
+
+
+

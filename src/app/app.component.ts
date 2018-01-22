@@ -4,6 +4,7 @@ import { hashedPassword } from "./hashedPassword";
 import { encryptedData } from "./data";
 import { FinanceObject } from "./finance-object";
 import { FinanceData } from "./finance-data";
+import { FinanceChartComponent } from "./finance-chart.component"
 
 @Component({
   selector: "app-root",

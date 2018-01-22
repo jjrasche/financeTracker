@@ -11,8 +11,9 @@
 </ng-container>
 <ng-container *ngIf="loginVerified">
   <ng-container *ngFor="let data of dataSet">
-      <div> {{data.label}}</div>
-      <div> {{data.originationDate}}</div>
-      <div> {{data.originationAmount}}</div>
+      <div> {{data.label}} </div>
+      <div> {{data.originationDate}} </div>
+      <div> {{data.originationAmount}} </div>
   </ng-container>
+  <finance-chart [data]="dataSet"></finance-chart>
 </ng-container>

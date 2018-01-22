@@ -4,11 +4,13 @@ import { AES } from 'crypto-js';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { FinanceChartComponent } from './finance-chart.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FinanceChartComponent
   ],
   imports: [
     BrowserModule,
