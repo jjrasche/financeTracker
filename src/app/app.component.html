@@ -1,19 +1,26 @@
 <ng-container *ngIf="!loginVerified">
-  <div class="row">
+  <div class="container">
       <form class="col-sm-6 col-sm-offset-3" novalidate (ngSubmit)="verifyPassword(loginInput.value)">
         <div class="form-group">
           <label for="loginInput">Password</label>
-          <input #loginInput type="text" class="form-control" autocomplete="off" placeholder="Enter Password" id="loginInput" name="loginInput">
+          <input #loginInput type="password" class="form-control" autocomplete="off" placeholder="Enter Password" id="loginInput" name="loginInput">
         </div>
           <button type="button" class="btn btn-primary" (click)="verifyPassword(loginInput.value)">Login</button>
       </form>
     </div>
 </ng-container>
-<ng-container *ngIf="!loginVerified">
-  <ng-container *ngFor="let data of dataSet">
-      <div> {{data.label}} </div>
-      <div> {{data.originationDate}} </div>
-      <div> {{data.originationAmount}} </div>
-  </ng-container>
+<ng-container *ngIf="loginVerified">
+  <div class="container">
+    <div class="row">
+      <div class="hash-helper-buttons">
+        <button type="button" class="btn btn-primary" (click)="hashBoxOpened = !hashBoxOpened">{{(hashBoxOpened ? "Close" : "Open") + " Hash Helper"}}</button>
+      </div>
+    </div>
+    <div class="row">
+      <textarea #hashInput class="col-sm-6" (keyup)="hashHelper(hashInput.value)" *ngIf="hashBoxOpened"></textarea>
+      <textarea class="col-sm-6" [value]="hashedOutput" *ngIf="hashBoxOpened"></textarea>
+    </div>
+  </div>
+
   <finance-chart [data]="dataSet"></finance-chart>
 </ng-container>

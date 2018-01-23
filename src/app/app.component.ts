@@ -15,17 +15,35 @@ export class AppComponent {
   title = "app";
   public loginVerified: boolean;
   public dataSet: Array<FinanceObject>;
+  public hashBoxOpened: boolean;
+  public hashedOutput: string;
+  private encryptionKey: string;
 
   public constructor() {
     this.loginVerified = false;
     this.dataSet = new Array<FinanceObject>();
+    this.hashBoxOpened = false;
+  }
+ 
+  private initializeData(encryptionKey: string) {
+    this.encryptionKey = encryptionKey;
+    let unencryptedData = this.decryptAES(encryptedData, encryptionKey);
+    let obj = JSON.parse(unencryptedData) as Array<FinanceObject>;
+    this.dataSet = obj;
   }
 
-  private initializeData(encryptionKey: string) {
+  public hashHelper(input: string) {
+    this.hashedOutput = this.encryptAES(input, this.encryptionKey);
+  }
+
+  private decryptAES(encryptedData: string, encryptionKey: string) {
     let bytes = crypto.AES.decrypt(encryptedData, encryptionKey);
-    let plaintext = bytes.toString(crypto.enc.Utf8);
-    let obj = JSON.parse(plaintext) as Array<FinanceObject>;
-    this.dataSet = obj;
+    return bytes.toString(crypto.enc.Utf8);
+  }
+
+  private encryptAES(unEncryptedData: string, encryptionKey: string) {
+    let bytes = crypto.AES.encrypt(unEncryptedData, encryptionKey);
+    return bytes.toString();
   }
 
   public verifyPassword(input: string) {
@@ -36,3 +54,4 @@ export class AppComponent {
   }
 
 }
+
