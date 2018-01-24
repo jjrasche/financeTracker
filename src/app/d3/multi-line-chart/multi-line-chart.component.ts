@@ -35,19 +35,20 @@ export abstract class MultiLineChartComponent {
   protected xDomain: Array<Date>;
   private xScale: any;
   private y: any;
-  protected yDomain: Array<Number>;
+  protected yDomain: Array<number>;
   private yScale: any;
   private svg: any;
   private line: any;
   protected lineColors: ScaleSequential<string>; // e.g. "#784a1c" --> "line_1"
   protected lineData: Array<LineData>;
+  protected yDomainMarginPercentage: number;
 
   constructor() {
   }
 
   protected initializeProperties() {
     this.width = this.canvasWidth - this.margin.left - this.margin.right;
-    this.height = this.canvasHeight - this.margin.top - this.margin.bottom;
+    this.height = (this.canvasHeight - this.margin.top - this.margin.bottom);
   }
 
   protected initSvg() {
@@ -73,9 +74,16 @@ export abstract class MultiLineChartComponent {
     this.svg.append("g").attr("class", "xAxis").call(xAxis).attr("transform", "translate(" + 0 + ", " + this.height + ")");
     // set y-axis
     let currencyFormatter = d3.format("($.2f");
+    this.adjustYDomain();
     this.yScale = d3Scale.scaleLinear().domain(this.yDomain).range([this.height, 0]);
     let yAxis = d3Axis.axisLeft(this.yScale).tickFormat((d) => currencyFormatter(d));
     this.svg.append("g").attr("class", "yAxis").call(yAxis).append("text")
+  }
+
+  private adjustYDomain(): void {
+    let diff = this.yDomain[1] - this.yDomain[0];
+    let margin = diff * this.yDomainMarginPercentage / 100;
+    this.yDomain = [this.yDomain[0] - margin, this.yDomain[1] + margin];
   }
 
   protected drawLine() {

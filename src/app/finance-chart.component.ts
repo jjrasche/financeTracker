@@ -16,7 +16,6 @@ import * as d3Axis from "d3-axis";
     styleUrls: ["./d3/multi-line-chart/multi-line-chart.component.css"]
 })
 export class FinanceChartComponent extends MultiLineChartComponent implements OnInit {
-
     constructor() {
         super();
         this.canvasWidth = 900;
@@ -25,7 +24,7 @@ export class FinanceChartComponent extends MultiLineChartComponent implements On
         this.title = "Finacne Chart";
         this.subtitle = "Test";
         this.xDataProperty = "data";
-
+        this.yDomainMarginPercentage = 10;
     }
 
     ngOnInit() {
