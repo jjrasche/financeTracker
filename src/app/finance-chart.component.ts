@@ -6,6 +6,7 @@ import { ValueData } from "./value-data";
 
 import * as d3 from "d3";
 import * as d3Scale from "d3-scale";
+import * as d3ScaleChromatic from "d3-scale-chromatic";
 import * as d3Shape from "d3-shape";
 import * as d3Array from "d3-array";
 import * as d3Axis from "d3-axis";
@@ -67,7 +68,12 @@ export class FinanceChartComponent extends MultiLineChartComponent implements On
         this.lineData =  [actualData, desiredData, minimumData];
         this.xDomain = d3.extent(fullDomain);
         this.yDomain = [this.getMinOfLineData(), this.getMaxOfLineData()];
-        this.lineColors = d3.scaleOrdinal().domain(this.lineData.map(line => line.name)).range(d3.schemeCategory20c)
+        this.lineColors = d3.scaleOrdinal()
+            .domain(this.lineData.map(line => line.name))
+            .range(d3ScaleChromatic.schemeAccent)
+
+        var sc = d3ScaleChromatic;
+        var ds = d3Scale;
     }
 
     private getFullDateDomain(obj: FinanceObject): Array<Date> {

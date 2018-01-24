@@ -39,7 +39,7 @@ export abstract class MultiLineChartComponent {
   private yScale: any;
   private svg: any;
   private line: any;
-  protected lineColors: ScaleSequential<string>; // e.g. "#784a1c" --> "line_1"
+  protected lineColors: ScaleOrdinal<string, string>; // e.g. "#784a1c" --> "line_1"
   protected lineData: Array<LineData>;
   protected yDomainMarginPercentage: number;
 
@@ -111,8 +111,8 @@ export abstract class MultiLineChartComponent {
       .attr("class", "line")
       // .attr("d", handleLines)
       .attr("d", (d: LineData) => handleLines(d.values) )
-      // .style("stroke", function (d: LineData) { return this.lineColors(d.name); })
-      .style("stroke", "#784a1c")
+      .style("stroke", (d: LineData) => this.lineColors(d.name) )
+      // .style("stroke", "#784a1c")
       .style("fill-opacity", 0)
       .attr("id", function (d: LineData) { return d.name; });
 
