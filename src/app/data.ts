@@ -14,4 +14,18 @@
 
     * denotes a required field
 */
-export const encryptedData = "U2FsdGVkX19toocg0adJUBrJVwAj4fLaqy1O3COL2O2iSKQQsL+jAxAZmCbHG/ETGIi8hfk91bfjYCt43bqHN/iFLwYIfA95jBVqfHOV6HTbY4cb35IOZ6f7pCWhUm0fCKzj1iuxJdABObD5eYcrs1U31ySNPG3AtGZ0DTpCyW8PJb6q3euO2f8vG2XvTdiE/2d2bI9AEsgAhwar4urZyCfk3efqpCQHneLt/Uu7u9YY5sEwyRIySXbB6worNxYz";
+// export const encryptedData = "U2FsdGVkX19toocg0adJUBrJVwAj4fLaqy1O3COL2O2iSKQQsL+jAxAZmCbHG/ETGIi8hfk91bfjYCt43bqHN/iFLwYIfA95jBVqfHOV6HTbY4cb35IOZ6f7pCWhUm0fCKzj1iuxJdABObD5eYcrs1U31ySNPG3AtGZ0DTpCyW8PJb6q3euO2f8vG2XvTdiE/2d2bI9AEsgAhwar4urZyCfk3efqpCQHneLt/Uu7u9YY5sEwyRIySXbB6worNxYz";
+// export const encryptedData = "U2FsdGVkX19dSBVcnBQdynNCFqVc/dEB6m2trvBG72UKVGN+EXdyDTyh9NV1Aqh32Ple+du4gGtiNSaLQghX/u5rSO4QIWg3K6a/Mqeq3p3RIitmUoa8DvV/eZt5Tih3Oo+e695MCF3jDOL/+WCqDBArPgLq8YPBSHFjMMDZhW5rU2c004Hv/dfA1c2P4jMoXo0DTVdZh3vREAn4aPNG0Fg74i7YXU+D2WnHHoXp/JiHl478V1AoIN2D3qPzKnGQbGisuvKDv4f3T+6MiODDM2Vr+I8dUGg0DczyBREoHUXW9Pn226fhfKOL3080fUzZtSyyVz7elFAzqUGY6q3z25I7retboIosenRbusF0uxkF9TE9qn6Qez9k8Rd+Srf1TipxLPRuJvxGYk4rZzfy6g==";
+export const encryptedData = "U2FsdGVkX186nZQErunrUeOU2Emdn7OWC19N26LXGvkBQ/SaRaeon/+jsujca8EzLB6vxyAWZfu2nxSQr7FpeyUNRdGVR1seztnIZNqd8REptNNBYoTqt94FSuvx1VG4Acgt32X+yCG5Z375a0RR7t6EweTYv2BSPftS9TOpdyKdi/mJVuI7MLqdCdZxU31wWV8TZOF+Lbzkpv+thr7AEokL7q5czXazV2We70IFCcZGNOnSMjIXCSYVbvUIi9RhGxdtK+wpTDUKW16+Py7cHankQsP/9zWts3oEelDrLhTOo61r0pQVjG0/inp98d3gvtwk0VebP80angn4us4VQamTvpmhy+ASyVv7Pw6vjonjSvxiOGV8WkUdwwVHDlKZ";
+export const unencryptedData = `[
+    {
+        "label": "mortgage",
+        "originationDate": "2018-05-01T05:00:00.000Z",
+        "originiationAmount": 250000,
+        "data": {
+            "actual": [3000, 5000, 2000, 4000, 8000, 9000],
+            "desired": 3000,
+            "minimum": 1200
+        }
+    }
+]`

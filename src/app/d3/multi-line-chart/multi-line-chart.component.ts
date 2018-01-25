@@ -16,7 +16,7 @@ import { ValueData } from "../../value-data";
   templateUrl: "./multi-line-chart.component.html",
   styleUrls: ["./multi-line-chart.component.css"]
 })
-export abstract class MultiLineChartComponent {
+export class MultiLineChartComponent {
   public title: string;
   public subtitle: string;
 

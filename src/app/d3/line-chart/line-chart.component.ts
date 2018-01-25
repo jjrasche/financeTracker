@@ -10,7 +10,7 @@ import * as d3Axis from "d3-axis";
   templateUrl: "./line-chart.component.html",
   styleUrls: ["./line-chart.component.css"]
 })
-export abstract class LineChartComponent {
+export class LineChartComponent {
   public title: string;
   public subtitle: string;
 
@@ -28,11 +28,7 @@ export abstract class LineChartComponent {
   private svg: any;
   private line: d3Shape.Line<[number, number]>;
 
-  constructor(chartWidth, chartHeight, margin) { 
-    this.chartHeight= chartHeight;
-    this.chartWidth = chartWidth;
-    this.margin = margin;
-
+  constructor() { 
     this.scaleWidth = this.chartWidth - this.margin.left - this.margin.right;
     this.scaleHeight = this.chartHeight - this.margin.top - this.margin.bottom;
   }

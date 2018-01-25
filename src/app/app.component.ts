@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import * as crypto from "crypto-js";
 import { hashedPassword } from "./hashedPassword";
-import { encryptedData } from "./data";
+import { encryptedData, unencryptedData } from "./data";
 import { FinanceObject } from "./finance-object";
 import { FinanceData } from "./finance-data";
 import { FinanceChartComponent } from "./finance-chart.component"
@@ -23,11 +23,14 @@ export class AppComponent {
     this.loginVerified = false;
     this.dataSet = new Array<FinanceObject>();
     this.hashBoxOpened = false;
+
+    this.initializeData("jim.rasche");
+    this.loginVerified = true;
   }
  
   private initializeData(encryptionKey: string) {
-    this.encryptionKey = encryptionKey;
-    let unencryptedData = this.decryptAES(encryptedData, encryptionKey);
+    // this.encryptionKey = encryptionKey;
+    // let unencryptedData = this.decryptAES(encryptedData, encryptionKey);
     let obj = JSON.parse(unencryptedData) as Array<FinanceObject>;
     this.dataSet = obj;
   }
