@@ -23,14 +23,11 @@ export class AppComponent {
     this.loginVerified = false;
     this.dataSet = new Array<FinanceObject>();
     this.hashBoxOpened = false;
-
-    this.initializeData("jim.rasche");
-    this.loginVerified = true;
   }
  
   private initializeData(encryptionKey: string) {
-    // this.encryptionKey = encryptionKey;
-    // let unencryptedData = this.decryptAES(encryptedData, encryptionKey);
+    this.encryptionKey = encryptionKey;
+    let unencryptedData = this.decryptAES(encryptedData, encryptionKey);
     let obj = JSON.parse(unencryptedData) as Array<FinanceObject>;
     this.dataSet = obj;
   }
