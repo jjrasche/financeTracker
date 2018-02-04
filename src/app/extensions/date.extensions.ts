@@ -21,10 +21,14 @@ Date.prototype.addMonthsToDate = function(months: number): Date {
 
 Date.prototype.monthsBetween = function(d: Date): number {
     let months: number;
-    months = (this.getFullYear() - d.getFullYear()) * 12;
-    months -= d.getMonth() + 1;
-    months += this.getMonth();
-    return Math.abs(months);
+    if (d > this) {
+        months = (d.getFullYear() - this.getFullYear()) * 12;
+        months += d.getMonth() - this.getMonth();
+    } else {
+        months = (this.getFullYear() - d.getFullYear()) * 12;
+        months += this.getMonth() - d.getMonth();
+    }
+    return months;
 }
 
 Date.prototype.formMonthYear = function(): string {

@@ -48,8 +48,6 @@ export abstract class BaseChartObject implements ChartObject {
 
         this.width = this.canvasWidth - this.margin.left - this.margin.right;
         this.height = (this.canvasHeight - this.margin.top - this.margin.bottom);
-
-        this.setLineColors();
     }
 
     public abstract setXDomain();
@@ -186,7 +184,7 @@ export abstract class BaseChartObject implements ChartObject {
         // this.svg.append("g").call(d3.axisLeft(y));
     }
 
-    private setLineColors() {
+    public setLineColors(): void {
         this.lineColors = d3.scaleOrdinal()
             .domain(this.linesData.map(line => line.name))
             .range(d3ScaleChromatic.schemeAccent)

@@ -20,9 +20,10 @@ export const encryptedData = "U2FsdGVkX186nZQErunrUeOU2Emdn7OWC19N26LXGvkBQ/SaRa
 export const unencryptedData = `[
     {
         "name": "mortgage",
-        "originationDate": "2018-05-01T05:00:00.000Z",
+        "originationDate": "2017-08-01T05:00:00.000Z",
         "originationAmount": -250000,
-        "data": [
+        "type": 0,
+        "financeData": [
             {"label": "actual", "type": 0, "data": [-249000, -248000, -247000, -245950, -244900, -241800]}
         ]
     }

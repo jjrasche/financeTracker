@@ -22,8 +22,6 @@ export class MultiLineChartComponent {
   public subtitle: string;
 
   @Input() protected data: BaseFinanceObject;
-  // @Input() protected xDataProperty: string;
-  // @Input() protected yDataProperty: string;
 
   private svg: any;
   

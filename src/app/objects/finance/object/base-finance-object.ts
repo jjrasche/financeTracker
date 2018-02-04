@@ -6,6 +6,7 @@ import { LineData } from "../../line-data";
 import { FinanceObject } from "./finance-object";
 import { BaseChartObject } from "../../chart/base-chart-object";
 import { ValueData } from "../../value-data";
+import { BaseFinanceData } from "../data/base-finance-data";
 
 export class BaseFinanceObject extends BaseChartObject implements FinanceObject {
     name: string;
@@ -14,16 +15,34 @@ export class BaseFinanceObject extends BaseChartObject implements FinanceObject 
     originationAmount: number;
     financeData: Array<FinanceData<any>>;
 
-    constructor() {
+    constructor(clone: BaseFinanceObject) {
         super();
+        this.name = clone.name;
+        this.originationDate = new Date(clone.originationDate)
+        this.type = clone.type as FinanceObjectType;
+        this.originationAmount = clone.originationAmount;
+
+        this.financeData = new Array<FinanceData<any>>();
+        clone.financeData.forEach(element => {
+            let clonedData = BaseFinanceData.cloneTypeSpecificData(element);
+            this.financeData.push(clonedData);
+        });
+
+        this.initialize();
+    }
+
+
+    
+    public initialize(): void {
         this.setXDomain();
         this.setLinesData();
         this.setYDomain();
+        this.setLineColors();
     }
-    
+
     public setXDomain(): void {
         let startMonth = this.originationDate.getFirstDayOfMonth();
-        let currentMonth = this.originationDate.getFirstDayOfMonth();
+        let currentMonth = new Date().getFirstDayOfMonth();
         let numberOfMonths = this.originationDate.monthsBetween(currentMonth);
 
         this.fullDomain.push(startMonth);
@@ -37,7 +56,7 @@ export class BaseFinanceObject extends BaseChartObject implements FinanceObject 
         this.linesData = new Array<LineData>();
         this.financeData.forEach((fd: FinanceData<any>) => {
             let lineData = fd.convertToLineData(this.fullDomain);
-            this.linesData.concat(lineData);
+            this.linesData.push(lineData);
         });
         
     }
@@ -45,7 +64,8 @@ export class BaseFinanceObject extends BaseChartObject implements FinanceObject 
     public setYDomain(): void {
         let allYValues = new Array<number>();
         this.linesData.forEach(d => {
-            allYValues.concat(d.values.map((vd: ValueData) => vd.value));
+            let tmpValues = d.values.map(vd => vd.value);
+            allYValues = allYValues.concat(tmpValues);
         });
         this.yDomain = [
             d3.min(allYValues),

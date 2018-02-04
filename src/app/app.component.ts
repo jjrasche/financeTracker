@@ -3,6 +3,7 @@ import * as crypto from "crypto-js";
 import { hashedPassword } from "./hashedPassword";
 import { encryptedData, unencryptedData } from "./data";
 import { FinanceObject } from "./objects/finance/object/finance-object";
+import { BaseFinanceObject } from "./objects/finance/object/base-finance-object";
 
 @Component({
   selector: "app-root",
@@ -29,7 +30,11 @@ export class AppComponent {
     // this.encryptionKey = encryptionKey;
     // let unencryptedData = this.decryptAES(encryptedData, encryptionKey);
     var ud = unencryptedData;
-    let obj = JSON.parse(unencryptedData) as Array<FinanceObject>;
+    let obj = new Array<FinanceObject>();
+    let tmp = JSON.parse(unencryptedData) as Array<any>;
+    tmp.map(a => {
+      obj.push(new BaseFinanceObject(a));
+    })
     this.dataSet = obj;
   }
 

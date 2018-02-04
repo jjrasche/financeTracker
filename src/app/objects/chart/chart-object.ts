@@ -4,4 +4,5 @@ export interface ChartObject {
     initSvg(): void
     initAxis(): void
     drawLine(): void
+    setLineColors(): void
 }
