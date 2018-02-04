@@ -19,13 +19,11 @@
 export const encryptedData = "U2FsdGVkX186nZQErunrUeOU2Emdn7OWC19N26LXGvkBQ/SaRaeon/+jsujca8EzLB6vxyAWZfu2nxSQr7FpeyUNRdGVR1seztnIZNqd8REptNNBYoTqt94FSuvx1VG4Acgt32X+yCG5Z375a0RR7t6EweTYv2BSPftS9TOpdyKdi/mJVuI7MLqdCdZxU31wWV8TZOF+Lbzkpv+thr7AEokL7q5czXazV2We70IFCcZGNOnSMjIXCSYVbvUIi9RhGxdtK+wpTDUKW16+Py7cHankQsP/9zWts3oEelDrLhTOo61r0pQVjG0/inp98d3gvtwk0VebP80angn4us4VQamTvpmhy+ASyVv7Pw6vjonjSvxiOGV8WkUdwwVHDlKZ";
 export const unencryptedData = `[
     {
-        "label": "mortgage",
+        "name": "mortgage",
         "originationDate": "2018-05-01T05:00:00.000Z",
-        "originiationAmount": 250000,
-        "data": {
-            "actual": [3000, 5000, 2000, 4000, 8000, 9000],
-            "desired": 3000,
-            "minimum": 1200
-        }
+        "originationAmount": -250000,
+        "data": [
+            {"label": "actual", "type": 0, "data": [-249000, -248000, -247000, -245950, -244900, -241800]}
+        ]
     }
 ]`
