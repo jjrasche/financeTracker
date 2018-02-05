@@ -1,3 +1,5 @@
+import { LineData } from "../line-data";
+
 export interface ChartObject {
     setXDomain(): Array<Date>
     setYDomain(): Array<number>

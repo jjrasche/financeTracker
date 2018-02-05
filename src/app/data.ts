@@ -24,7 +24,9 @@ export const unencryptedData = `[
         "originationAmount": -250000,
         "type": 0,
         "financeData": [
-            {"label": "actual", "type": 0, "data": [-249000, -248000, -247000, -245950, -244900, -241800]}
+            {"label": "actual", "type": 0, "data": [-249000, -248000, -247000, -245950, -244900, -241800]},
+            {"label": "desired", "type": 1, "data": 1500},
+            {"label": "minimum", "type": 2, "data": [{"constant": 1800, "duration": 3}, {"constant": 3000, "duration": 3}]}
         ]
     }
 ]`

@@ -7,6 +7,10 @@ import { FinanceObject } from "./finance-object";
 import { BaseChartObject } from "../../chart/base-chart-object";
 import { ValueData } from "../../value-data";
 import { BaseFinanceData } from "../data/base-finance-data";
+import { FinanceDataType } from "../data/finance-data-type";
+import { PointFinanceData } from "../data/point-finance-data";
+import { ConstantFinanceData } from "../data/constant-finance-data";
+import { IntervalFinanceData } from "../data/interval-finance-data";
 
 export class BaseFinanceObject extends BaseChartObject implements FinanceObject {
     name: string;
@@ -23,16 +27,14 @@ export class BaseFinanceObject extends BaseChartObject implements FinanceObject 
         this.originationAmount = clone.originationAmount;
 
         this.financeData = new Array<FinanceData<any>>();
-        clone.financeData.forEach(element => {
-            let clonedData = BaseFinanceData.cloneTypeSpecificData(element);
+        clone.financeData.forEach(financeData => {
+            let clonedData = this.cloneTypeSpecificData(financeData);
             this.financeData.push(clonedData);
         });
 
         this.initialize();
     }
 
-
-    
     public initialize(): void {
         this.setXDomain();
         this.setLinesData();
@@ -71,5 +73,26 @@ export class BaseFinanceObject extends BaseChartObject implements FinanceObject 
             d3.min(allYValues),
             d3.max(allYValues)
         ]
+    }
+
+    public cloneTypeSpecificData(baseData: object): FinanceData<any> {
+        let ret: FinanceData<any>;
+        switch (baseData[`type`]) {
+            case FinanceDataType.constant:
+                ret = new ConstantFinanceData(this.originationAmount);
+                break;
+            case FinanceDataType.interval:
+                ret = new IntervalFinanceData(this.originationAmount);
+                break;
+            case FinanceDataType.point:
+                ret = new PointFinanceData();
+                break;
+            default:
+                throw `Format issue with data, '${baseData["type"]}' is not a valid type.`;
+        }
+        ret.label = baseData[`label`];
+        ret.type = baseData[`type`];
+        ret.data = baseData[`data`];
+        return ret;
     }
 }

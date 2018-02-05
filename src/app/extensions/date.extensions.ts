@@ -32,6 +32,6 @@ Date.prototype.monthsBetween = function(d: Date): number {
 }
 
 Date.prototype.formMonthYear = function(): string {
-    return this.monthAbbreviationsNames[this.getMonth()] + " " + this.getFullYear();
+    return monthAbbreviationsNames[this.getMonth()] + " " + this.getFullYear();
 }
 

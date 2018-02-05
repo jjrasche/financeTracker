@@ -2,29 +2,29 @@ import { ValueData } from "../../value-data";
 import { FinanceDataType } from "./finance-data-type";
 import { FinanceData } from "./finance-data";
 import { LineData } from "../../line-data";
+import { FinanceObject } from "../object/finance-object";
+import { ChartObject } from "../../chart/chart-object";
+import { BaseFinanceObject } from "../object/base-finance-object";
 
 /*
     Holds array where each item in the array represents the value 
     for the alloted time interval.
 */
-export class PointData implements FinanceData<Array<number>> {
+export class ConstantFinanceData implements FinanceData<number> {
     public label: string;
     public type: FinanceDataType;
-    public data: Array<number>;
+    public data: number;
+    private originationAmount
 
-    constructor() {
+    constructor(originationAmount: number) {
         this.type = FinanceDataType.point;
+        this.originationAmount = originationAmount;
     }
     
     public convertToLineData(domain: Array<any>): LineData {
-        if (domain.length !== this.data.length) {
-            throw `Point data setup for ${this.label} has ${this.data.length} data points
-                    and the domain has ${domain.length}.`;
-        }
-
         let lineDate = new LineData(this.label);
         domain.forEach((d, i) => {
-            lineDate.values.push(new ValueData(d, this.data[i]));
+            lineDate.values.push(new ValueData(d, this.originationAmount + (i * this.data)));
         });
         return lineDate;
     }
