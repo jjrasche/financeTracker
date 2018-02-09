@@ -22,7 +22,8 @@ export const unencryptedData = `[
         "name": "mortgage",
         "originationDate": "2017-08-01T05:00:00.000Z",
         "originationAmount": -250000,
-        "type": 0,
+        "financeType": 0,
+        "intervalType": 2,
         "financeData": [
             {"label": "actual", "type": 0, "data": [-249000, -248000, -247000, -245950, -244900, -241800]},
             {"label": "desired", "type": 1, "data": 1500},

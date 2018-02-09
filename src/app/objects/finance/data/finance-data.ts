@@ -1,6 +1,7 @@
 import { ValueData } from "../../value-data";
 import { FinanceDataType } from "./finance-data-type";
 import { LineData } from "../../line-data";
+import { IntervalType } from "./interval-type";
 
 export interface FinanceData<T> {
     /*
@@ -14,4 +15,6 @@ export interface FinanceData<T> {
     data: T;
     
     convertToLineData(domain: Array<any>): LineData
+    timeToZeroDebt(intervalType: IntervalType): Date
+
 }

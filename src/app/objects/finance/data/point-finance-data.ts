@@ -2,6 +2,7 @@ import { ValueData } from "../../value-data";
 import { FinanceDataType } from "./finance-data-type";
 import { FinanceData } from "./finance-data";
 import { LineData } from "../../line-data";
+import { IntervalType } from "./interval-type";
 
 /*
     Holds array where each item in the array represents the value 
@@ -18,14 +19,18 @@ export class PointFinanceData implements FinanceData<Array<number>> {
     
     public convertToLineData(domain: Array<any>): LineData {
         if (domain.length !== this.data.length) {
-            throw `Point data setup for ${this.label} has ${this.data.length} data points
-                    and the domain has ${domain.length}.`;
+            // throw `Point data setup for ${this.label} has ${this.data.length} data points
+            //         and the domain has ${domain.length}.`;
         }
 
         let lineDate = new LineData(this.label);
-        domain.forEach((d, i) => {
-            lineDate.values.push(new ValueData(d, this.data[i]));
+        this.data.forEach((d: number, i: number) => {
+            lineDate.values.push(new ValueData(domain[i], d));
         });
         return lineDate;
+    }
+
+    public timeToZeroDebt(intervalType: IntervalType): Date {
+        return new Date();
     }
 }

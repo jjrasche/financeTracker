@@ -1,3 +1,5 @@
+import { IntervalType } from "../objects/finance/data/interval-type";
+
 export { monthAbbreviationsNames }
 
 const monthAbbreviationsNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
@@ -7,7 +9,8 @@ declare global {
         getFirstDayOfMonth(): Date;
         addMonthsToDate(nomths: number): Date;
         monthsBetween(d: Date): number;
-        formMonthYear (): string;
+        formMonthYear(): string;
+        addIntervalToDate(intervalType: IntervalType): void;
     }
 }
 
@@ -33,5 +36,24 @@ Date.prototype.monthsBetween = function(d: Date): number {
 
 Date.prototype.formMonthYear = function(): string {
     return monthAbbreviationsNames[this.getMonth()] + " " + this.getFullYear();
+}
+
+Date.prototype.addIntervalToDate = function (intervalType: IntervalType): void {
+    switch (intervalType) {
+        case IntervalType.day:
+            this.setDate(this.getDate() + 1);
+            break;
+        case IntervalType.week:
+            this.setDate(this.getDate() + 7);
+            break;
+        case IntervalType.month:
+            this.setMonth(this.getMonth() + 1);
+            break;
+        case IntervalType.year:
+            this.setFullYear(this.getFullYear() + 1);
+            break;
+        default:
+            break;
+    }
 }
 

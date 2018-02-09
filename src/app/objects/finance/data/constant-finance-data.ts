@@ -5,6 +5,7 @@ import { LineData } from "../../line-data";
 import { FinanceObject } from "../object/finance-object";
 import { ChartObject } from "../../chart/chart-object";
 import { BaseFinanceObject } from "../object/base-finance-object";
+import { IntervalType } from "./interval-type";
 
 /*
     Holds array where each item in the array represents the value 
@@ -27,5 +28,19 @@ export class ConstantFinanceData implements FinanceData<number> {
             lineDate.values.push(new ValueData(d, this.originationAmount + (i * this.data)));
         });
         return lineDate;
+    }
+
+    public timeToZeroDebt(intervalType: IntervalType): Date {
+        let value = this.originationAmount;
+        let date = new Date();
+
+        // if converging on 0 continue adding
+        if (this.data > 0) {
+            while (value < 0) {
+                value += this.data;
+                date.addIntervalToDate(intervalType);
+            }
+        }
+        return date;
     }
 }
