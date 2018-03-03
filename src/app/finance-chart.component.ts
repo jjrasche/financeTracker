@@ -27,5 +27,6 @@ export class FinanceChartComponent implements OnInit {
         this.data[0].initSvg();
         this.data[0].initAxis();
         this.data[0].drawLine();
+        this.data[0].setToolTipOverlay();
     }
 }

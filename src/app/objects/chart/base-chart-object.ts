@@ -3,6 +3,7 @@ import * as d3Scale from "d3-scale";
 import * as d3Shape from "d3-shape";
 import * as d3Array from "d3-array";
 import * as d3Axis from "d3-axis";
+import * as d3Tip from "d3-tip";
 import * as d3ScaleChromatic from "d3-scale-chromatic";
 import "d3-selection-multi";
 import { scaleOrdinal, ScaleOrdinal, ScaleTime, scaleSequential, ScaleSequential } from "d3-scale";
@@ -29,6 +30,10 @@ export abstract class BaseChartObject implements ChartObject {
     private yScale: any;
     protected fullDomain: Array<Date>;
     protected linesData: Array<LineData>;
+    private tooltip: any;
+    private tooltipLine: any;
+    private background: any;
+    private mouseMove: Function;
 
     private lineColors: ScaleOrdinal<string, string>; // e.g. "#784a1c" --> "line_1"
     private yDomainMarginPercentage: number;
@@ -50,6 +55,60 @@ export abstract class BaseChartObject implements ChartObject {
         this.height = (this.canvasHeight - this.margin.top - this.margin.bottom);
     }
 
+    private findClosestDateToMouse(exactDate: Date, domain: Array<Date>): Date {
+        let bisectDate = d3.bisector(function (d) { return d; }).left;        
+        let index = bisectDate(domain, exactDate, 1);
+        let prevDate = domain[index - 1];
+        // let nextDate = domain[index];
+        return prevDate;//+exactDate - +prevDate > +nextDate - +exactDate ? prevDate : nextDate;
+    }
+
+    private drawTooltip = (value: ValueData) => {
+        let fd = this.fullDomain;
+        let func = this.findClosestDateToMouse;
+        var mousePos = d3.mouse(this.tooltipLine.node());
+        var exactDateByPosition = this.xScale.invert(mousePos[0]);
+        let closestDate = this.findClosestDateToMouse(exactDateByPosition, this.fullDomain);
+
+        const closestXPos = this.xScale(closestDate)
+        console.log(mousePos[0] + "\n" + exactDateByPosition.formMonthYear() + "\n" + closestDate.formMonthYear() + "\n" + closestXPos);
+
+        this.tooltipLine.attr('stroke', 'black')
+            .attr('x1', closestXPos)
+            .attr('x2', closestXPos)
+            .attr('y1', 0)
+            .attr('y2', this.background.node().height.baseVal.value);
+
+        this.tooltip.html(closestDate.formMonthYear())
+            .style('display', 'block')
+            .style('left', (d3.event.pageX + 20).toString()+"px")
+            .style('top', (d3.event.pageY - 20).toString()+"px")
+            .style("color", "white") 
+            .selectAll()
+            .data(this.linesData).enter()
+            .append('div')
+            .style('color', (d: LineData) => this.lineColors(d.name))
+            .html((d: LineData) => this.createToolTipMessage(d, closestDate));
+    }
+
+    private createToolTipMessage(data: LineData, closestXTick: Date) {
+        let value = data.values.find(x => x.date === closestXTick);
+        let strValue = "";
+        if (value != null) {
+            strValue = value.value.toString();
+        }
+        return data.name + ': ' + strValue;
+    }
+
+    private removeTooltip = () => {
+        if (this.tooltip) {
+            this.tooltip.style('display', 'none');
+        }
+        if (this.tooltipLine) {
+            this.tooltipLine.attr('stroke', 'none');
+        }
+    }
+
     public abstract setXDomain();
     public abstract setYDomain();
 
@@ -62,14 +121,21 @@ export abstract class BaseChartObject implements ChartObject {
             .attrs({ "margin-top": this.margin.top, "margin-left": this.margin.left })
             .append("g")
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
-
-        /* Set background */
-        // want to make background bounded by the axis
-        this.svg.append("rect")
-          .attr("class", "chart-background")
-          .attr({ "height": this.height, "width": this.width, "x": 0, "y": 0 });
     }
 
+    public setToolTipOverlay() {
+        /* Set background */
+        // want to make background bounded by the axis
+        this.background = this.svg.append("rect")
+            .attr("class", "chart-background")
+            .attr('opacity', 0)
+            .attrs({ "height": this.height, "width": this.width, "x": 0, "y": 0 })
+            .on('mousemove', this.drawTooltip)
+            .on('mouseout', this.removeTooltip);
+
+        this.tooltipLine = this.svg.append('line');
+        this.tooltip = d3.select('#tooltip');
+    }
     public initAxis() {
         // set y-axis
         this.xScale = d3Scale.scaleTime().domain(this.xDomain).range([0, this.width]);
@@ -99,11 +165,15 @@ export abstract class BaseChartObject implements ChartObject {
             .append("g")
             .attr("class", "line1");
         lines.append("path")
+            .attr('fill', 'none')
             .attr("class", "line")
             .attr("d", (d: LineData) => handleLines(d.values))
-            .style("stroke", (d: LineData) => this.lineColors(d.name))
+            .attr("stroke", (d: LineData) => this.lineColors(d.name))
             .style("fill-opacity", 0)
-            .attr("id", function (d: LineData) { return d.name; });
+            .attr("id", function (d: LineData) { return d.name; })
+            // .on('mousemove', (d: LineData, i: number, e: Element) => this.mouseMove(d, i, e))
+            // .on("mouseover", () => this.tooltip.style("display", null))
+            // .on("mouseout", () => this.tooltip.style("display", "none"))
     }
 
     public setLineColors(): void {

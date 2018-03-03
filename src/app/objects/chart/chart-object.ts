@@ -7,4 +7,5 @@ export interface ChartObject {
     initAxis(): void
     drawLine(): void
     setLineColors(): void
+    setToolTipOverlay(): void
 }
