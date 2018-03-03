@@ -24,9 +24,13 @@ export class ConstantFinanceData implements FinanceData<number> {
     
     public convertToLineData(domain: Array<any>): LineData {
         let lineDate = new LineData(this.label);
-        domain.forEach((d, i) => {
-            lineDate.values.push(new ValueData(d, this.originationAmount + (i * this.data)));
-        });
+
+        for (let i = 0; i < domain.length; i++) {
+            lineDate.values.push(new ValueData(domain[i], this.originationAmount + (i * this.data)));
+            if (lineDate.values[i].value > 0) {
+                break;
+            }
+        }
         return lineDate;
     }
 

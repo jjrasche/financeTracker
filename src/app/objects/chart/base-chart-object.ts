@@ -168,12 +168,9 @@ export abstract class BaseChartObject implements ChartObject {
             .attr('fill', 'none')
             .attr("class", "line")
             .attr("d", (d: LineData) => handleLines(d.values))
-            .attr("stroke", (d: LineData) => this.lineColors(d.name))
+            .style("stroke", (d: LineData) => this.lineColors(d.name))
             .style("fill-opacity", 0)
             .attr("id", function (d: LineData) { return d.name; })
-            // .on('mousemove', (d: LineData, i: number, e: Element) => this.mouseMove(d, i, e))
-            // .on("mouseover", () => this.tooltip.style("display", null))
-            // .on("mouseout", () => this.tooltip.style("display", "none"))
     }
 
     public setLineColors(): void {

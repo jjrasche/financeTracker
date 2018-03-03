@@ -37,7 +37,8 @@ export class IntervalFinanceData implements FinanceData<Array<Interval>> {
             }
             // if last interval and converging on 0 continue adding
             if (index === this.data.length - 1) {
-                while (domainIndex < domain.length) {
+                // while (domainIndex < domain.length) {
+                while (preValue < 0) {
                     preValue += interval.constant;
                     lineDate.values.push(new ValueData(domain[domainIndex++], preValue));
                 }
@@ -71,6 +72,7 @@ export class IntervalFinanceData implements FinanceData<Array<Interval>> {
                 while (value < 0) {
                     value += interval.constant;
                     date.addIntervalToDate(intervalType);
+                    console.log(value.toString() + "   " + date)
                 }
             }
         });
